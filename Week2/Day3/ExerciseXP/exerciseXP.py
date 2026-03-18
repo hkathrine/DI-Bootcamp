@@ -12,7 +12,7 @@ def display_board(board):
         print("*")
         print("* --- | --- | --- *")
 
-def row_input(player, board):
+def row_input():
     while 1:
         row = input("Enter row: ")
         try:
@@ -20,12 +20,12 @@ def row_input(player, board):
         except ValueError:
              print("Please enter a number.")
              continue    
-        if (row < 0 or row > 2):
+        if (val < 0 or val > 2):
              print("the number is out of range. Please enter a number in a range 0-2")
         else:
-             return row
+             return val
     
-def column_input(player, board):
+def column_input():
     while 1:
         column = input("Enter column: ")
         try:
@@ -33,22 +33,21 @@ def column_input(player, board):
         except ValueError:
              print("Please enter a number.")
              continue    
-        if (column < 0 or column > 2):
+        if (val < 0 or val > 2):
              print("the number is out of range. Please enter a number in a range 0-2")
         else:
-            return column
+            return val
 
 def player_input(player, board):
     print(f"Player {player}'s turn...")
-    row = row_input(player, board)
-    column = column_input(player, board)
 
-    while board[row][column] != " ":
+    while 1:
+        row = row_input()
+        column = column_input()
+        if board[row][column] == " ":
+            board[row][column] = f"{player}"
+            break
         print("The slot is taken. Please choose another slot:")
-        row = row_input(player, board)
-        column = column_input(player, board)
-
-    board[row][column] = f"{player}"
 
 def check_rows(board, player):
     for i in range(3):
