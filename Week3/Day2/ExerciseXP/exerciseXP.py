@@ -1,16 +1,14 @@
-#from abc import ABC, abstractmethod
 
 #1
 print("ex 1-----------")
-class Pets:
-    #@abstractmethod
+class Pets():
     def __init__(self, animals):
         self.animals = animals
     def walk(self):
         for animal in self.animals:
             print(animal.walk())
 
-class Cat(Pets):
+class Cat():
     def __init__(self, name, age):
         self._name = name
         self._age = age
