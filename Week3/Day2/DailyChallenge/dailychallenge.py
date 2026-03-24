@@ -18,7 +18,7 @@ class Pagination():
         if int_page_num > self.total_number_of_pages or int_page_num <= 0:
             raise ValueError(f"Page number {int_page_num} is out of range.")
         
-        self.current_idx = page_num - 1
+        self.current_idx = int_page_num - 1
 
         return self
     
@@ -68,7 +68,7 @@ try:
     p.go_to_page(10) 
 except ValueError as e:
     print(f"Error: {e}") # ValueError
-    
+
 p.last_page()
 
 try:
