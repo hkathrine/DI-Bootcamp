@@ -1,0 +1,3 @@
+The weather today is wonderful. Today is a great day to learn Python and write some code. 
+Python is a very popular programming language. Many developers love Python because Python is simple and powerful.
+Learning something new every day makes life interesting. Have a wonderful day!

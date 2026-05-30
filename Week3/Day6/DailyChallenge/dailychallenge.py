@@ -1,84 +1,62 @@
-import math
 
-
-class Pagination():
-    def __init__(self, items=None, page_size=10):
-        self.items = items if items is not None else []
-        self.page_size = page_size
-        self.current_idx = 0
-        self.total_number_of_pages = math.ceil(len(self.items) / self.page_size)
-    
-    def get_visible_items(self):
-        start = self.current_idx * int(self.page_size)
-        end = start + self.page_size
-        return self.items[start:end]
-    
-    def go_to_page(self, page_num):
-        int_page_num = int(page_num)
-        if int_page_num > self.total_number_of_pages or int_page_num <= 0:
-            raise ValueError(f"Page number {int_page_num} is out of range.")
+class Text:
+    def __init__(self, text):
+        self.text = text
+    @classmethod
+    def from_file(cls, file_path):
         
-        self.current_idx = int_page_num - 1
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.read()
 
-        return self
+        return cls(content)
+
+
+    def _get_clean_words(self):
+        cleaned_text = self.text.lower()
+        for char in [".", ",", "!", "?", ";", ":"]:
+            cleaned_text = cleaned_text.replace(char, "")
+        return cleaned_text.split()
+    def word_frequency(self, word):
+        words_list = self._get_clean_words()
+        target_word = word.lower()
+        
+        count = words_list.count(target_word)
+        
+        # if the word is found more than 0 times
+        if count > 0:
+            return count
+        else:
+            return f"the word '{word}' not found"
+        
+    def most_common_word(self):
+        words_list = self._get_clean_words()
+        if not words_list:
+            return "No text."
+            
+        frequency_dict = {}
+        for word in words_list:
+            if word in frequency_dict:
+                frequency_dict[word] += 1
+            else:
+                frequency_dict[word] = 1
+                
+        
+        most_common = max(frequency_dict, key=frequency_dict.get)
+        return most_common
+
+    def unique_words(self):
+        words_list = self._get_clean_words()
+        
+        unique_set = set(words_list)
+        
+        return list(unique_set)
     
-    def first_page(self):
-        self.current_idx = 0
-        return self
+def main():
+    analyzer = Text.from_file("DI-Bootcamp/Week3/Day6/DailyChallenge/text.txt")
 
-    def last_page(self):
-        self.current_idx = self.total_number_of_pages - 1
-        return self
-    
-    def next_page(self):
-        if self.current_idx < (self.total_number_of_pages - 1):
-            self.current_idx += 1
-        return self
-
-    def previous_page(self):
-        if self.current_idx != 0:
-            self.current_idx -= 1
-        return self
-    
-    def __str__(self):
-        start = self.current_idx * int(self.page_size)
-        end = start + self.page_size
-        str_current_page = self.items[start:end]
-
-        return "\n".join(str(item) for item in str_current_page)
-    
-
-#tests
-   
-alphabetList = list("abcdefghijklmnopqrstuvwxyz")
-
-p = Pagination(alphabetList, 4)
-
-print(p.get_visible_items())# ['a', 'b', 'c', 'd']
-
-p.next_page()
-
-print(p.get_visible_items())# ['e', 'f', 'g', 'h']
-
-p.last_page()
-
-print(p.get_visible_items())# ['y', 'z']
-
-try:
-    p.go_to_page(10) 
-except ValueError as e:
-    print(f"Error: {e}") # ValueError
-
-p.last_page()
-
-try:
-    print(p.current_idx + 1)# Output: ValueError
-except ValueError as e:
-    print(f"Error: {e}") # ValueError
+    # Теперь у объекта analyzer есть доступ ко всем методам из Part I:
+    print("Unique words:", analyzer.unique_words())
+    print("the most common word:", analyzer.most_common_word())
 
 
-try:
-    p.go_to_page(0)
-except ValueError as e:
-    print(f"Error: {e}")# Raises ValueError
-
+main()
